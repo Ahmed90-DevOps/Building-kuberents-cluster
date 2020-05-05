@@ -15,6 +15,6 @@
      notify: start kubelet service
 
   handlers:
-     - name: start kubelet service
-       service: name=kubelet  state=started enabled=yes
+   - name: start kubelet service
+     service: name=kubelet  state=started enabled=yes
        
