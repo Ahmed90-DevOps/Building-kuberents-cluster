@@ -25,7 +25,7 @@
 
   tasks:
     - name: open ports on firewall
-      shell: sudo "{{item}}"
+      shell: "{{item}}"
       with_items:
         - firewall-cmd --permanent --add-port=6443/tcp
         - firewall-cmd --permanent --add-port=2379-2380/tcp
@@ -41,7 +41,7 @@
 
   tasks:
     - name: open ports on firewall
-      shell: sudo "{{item}}"
+      shell: "{{item}}"
       with_items:
         - firewall-cmd --permanent --add-port=10251/tcp
         - firewall-cmd --permanent --add-port=10255/tcp
