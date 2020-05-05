@@ -6,3 +6,15 @@
    - name: check nodes reachability
      ping:
 
+   - name: installing k8s packages
+     yum: name="{{item}}" state=present
+     with_items:
+      - kubelet
+      - kubeadm
+      - kubectl
+     notify: start kubelet service
+
+  handlers:
+     - name: start kubelet service
+       service: name=kubelet  state=started enabled=yes
+       
