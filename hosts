@@ -1,0 +1,10 @@
+[kuberents-master]
+master	ansible_host=192.168.1.13
+
+[kuberents-nodes]
+node01	ansible_host=192.168.1.15 
+
+[K8s:children]
+kuberents-master
+kuberents-nodes
+
