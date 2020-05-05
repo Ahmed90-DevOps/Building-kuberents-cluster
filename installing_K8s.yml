@@ -1,5 +1,6 @@
 ---
 - hosts: K8s
+  name: installing kuberents
   gather_facts: false
 
   tasks:
@@ -12,9 +13,36 @@
       - kubelet
       - kubeadm
       - kubectl
-     notify: start kubelet service
+     notify: "start kubelet service"
 
   handlers:
-   - name: start kubelet service
-     service: name=kubelet  state=started enabled=yes
-       
+   - name: "start kubelet service"
+     service: name=kubelet state=started enabled=yes
+
+- name: play02 'configure firewall on master node'
+  hosts: kuberents-master
+  gather_facts: false
+
+  tasks:
+    - name: open ports on firewall
+      shell:
+      with_items:
+        - firewall-cmd --permanent --add-port=6443/tcp
+        - firewall-cmd --permanent --add-port=2379-2380/tcp
+        - firewall-cmd --permanent --add-port=10250/tcp
+        - firewall-cmd --permanent --add-port=10251/tcp
+        - firewall-cmd --permanent --add-port=10252/tcp
+        - firewall-cmd --permanent --add-port=10255/tcp
+        - firewall-cmd –-reload
+
+- name: play03 'configure firewall on worker nodes'
+  hosts: kuberents-nodes
+  gather_facts: false
+
+  tasks:
+    - name: open ports on firewall
+      shell:
+      with_items:
+        - firewall-cmd --permanent --add-port=10251/tcp
+        - firewall-cmd --permanent --add-port=10255/tcp
+        - firewall-cmd --reload 
