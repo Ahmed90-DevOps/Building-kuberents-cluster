@@ -10,7 +10,6 @@
    - name: disable selinux on all nodes
      shell: "{{item}}"
      with_items:
-      - setenforce 0
       - sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
 
    - name: Reboot servers and wait for them to come back up.
