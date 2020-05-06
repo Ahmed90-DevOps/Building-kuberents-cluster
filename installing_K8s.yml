@@ -55,11 +55,12 @@
       with_items:
         - swapoff -a
         - kubeadm init
-      register: output
-    - local_action: copy content={{ output.stdout_lines }} dest=/home/ahmed/github_repos/installing-kuberents/kubinit.log
+      register: save
+
+    - local_action: copy content={{ save }} dest=/home/ahmed/github_repos/installing-kuberents/kubinit.log
 
     - name: show kubinit output
-      debug: var=output.stdout_lines
+      debug: var=save
 
     - name: allow root user to use the cluster
       shell: "{{item}}"
