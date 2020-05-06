@@ -51,7 +51,7 @@
         - echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
 
     - name: nitialize Kubernetes Master
-      shell:
+      shell: "{{item}}"
       with_items:
         - swapoff -a
         - kubeadm init
@@ -62,7 +62,7 @@
       debug: var=output.stdout_lines
 
     - name: allow root user to use the cluster
-      shell:
+      shell: "{{item}}"
       with_items:
         - mkdir -p $HOME/.kube
         - cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
