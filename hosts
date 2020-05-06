@@ -1,5 +1,5 @@
 [kuberents-master]
-master	ansible_host=192.168.1.13
+master	ansible_host=192.168.1.25
 
 [kuberents-nodes]
 node01	ansible_host=192.168.1.15 
