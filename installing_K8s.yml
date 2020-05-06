@@ -1,31 +1,45 @@
 ---
 - hosts: K8s
-  name: installing kuberents
+  name: play01 'configuration on all nodes'
   gather_facts: false
 
   tasks:
    - name: check nodes reachability
      ping:
 
+   - name: disable selinux on all nodes
+     shell: "{{item}}"
+     with_items:
+      - setenforce 0
+      - sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
+
+   - name: Reboot servers and wait for them to come back up.
+     reboot:
+   
    - name: installing k8s packages
      yum: name="{{item}}" state=present
      with_items:
       - kubelet
       - kubeadm
       - kubectl
-     notify: "start kubelet service"
-
+      - docker
+     notify:
+       - start services
+         
   handlers:
-   - name: "start kubelet service"
-     service: name=kubelet state=started enabled=yes
+    - name: start services
+      service: name="{{item}}" state=started enabled=yes
+      with_items:
+       - kubelet
+       - docker
 
-- name: play02 'configure firewall on master node'
+- name: play02 'configuration on master node'
   hosts: kuberents-master
   gather_facts: false
 
   tasks:
     - name: open ports on firewall
-      shell: "{{item}}"
+      shell: sudo "{{item}}"
       with_items:
         - firewall-cmd --permanent --add-port=6443/tcp
         - firewall-cmd --permanent --add-port=2379-2380/tcp
@@ -34,15 +48,38 @@
         - firewall-cmd --permanent --add-port=10252/tcp
         - firewall-cmd --permanent --add-port=10255/tcp
         - firewall-cmd --reload
+        - modprobe br_netfilter
+        - echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
 
-- name: play03 'configure firewall on worker nodes'
+    - name: nitialize Kubernetes Master
+      shell:
+      with_items:
+        - swapoff -a
+        - kubeadm init
+      register: output
+    - local_action: copy content={{ output.stdout_lines }} dest=/home/ahmed/github_repos/installing-kuberents/kubinit.log
+
+    - name: show kubinit output
+      debug: var=output.stdout_lines
+
+    - name: allow root user to use the cluster
+      shell:
+      with_items:
+        - mkdir -p $HOME/.kube
+        - cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+        - chown $(id -u):$(id -g) $HOME/.kube/config
+
+- name: play03 'configuration on worker nodes'
   hosts: kuberents-nodes
   gather_facts: false
 
   tasks:
     - name: open ports on firewall
-      shell: "{{item}}"
+      shell: sudo "{{item}}"
       with_items:
-        - firewall-cmd --permanent --add-port=10251/tcp
+        - firewall-cmd --permanent --add-port=6783/tcp
+        - firewall-cmd --permanent --add-port=10250/tcp
+        - firewall-cmd --permanent --add-port=30000-32767/tcp
         - firewall-cmd --permanent --add-port=10255/tcp
-        - firewall-cmd --reload 
+        - firewall-cmd --reload
+        - echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
