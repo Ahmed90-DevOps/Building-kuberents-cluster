@@ -50,11 +50,13 @@
         - modprobe br_netfilter
         - echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
 
+
     - name: nitialize Kubernetes Master
       shell: "{{item}}"
       with_items:
         - swapoff -a
-        - kubeadm init
+        - sed -i '/swap/ s/^/#/' /etc/fstab
+        - kubeadm init --apiserver-advertise-address=192.168.1.25 --pod-network-cidr=10.244.0.0/16
       register: save
 
     - local_action: copy content={{ save }} dest=/home/ahmed/github_repos/installing-kuberents/kubinit.log
@@ -69,6 +71,9 @@
         - cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
         - chown $(id -u):$(id -g) $HOME/.kube/config
 
+    - name: Configure Pod Network with Flannel
+      shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+
 - name: play03 'configuration on worker nodes'
   hosts: kuberents-nodes
   gather_facts: false
@@ -82,4 +87,7 @@
         - firewall-cmd --permanent --add-port=30000-32767/tcp
         - firewall-cmd --permanent --add-port=10255/tcp
         - firewall-cmd --reload
+        - modprobe br_netfilter
         - echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
+        - swapoff -a
+        - sed -i '/swap/ s/^/#/' /etc/fstab
