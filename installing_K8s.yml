@@ -14,7 +14,7 @@
 
    - name: Reboot servers and wait for them to come back up.
      reboot:
-   
+
    - name: installing k8s packages
      yum: name="{{item}}" state=present
      with_items:
@@ -24,7 +24,7 @@
       - docker
      notify:
        - start services
-         
+
   handlers:
     - name: start services
       service: name="{{item}}" state=started enabled=yes
@@ -62,13 +62,7 @@
     - local_action: copy content={{ item.stdout_lines[-2:] }} dest=/home/ahmed/github_repos/installing-kuberents/kubinit.log
       loop: "{{save.results}}"
 
-    - name: show cluster join command
-      shell: echo "kubeadm join `awk '{print $2,$3,$4,$5,$8,$9}' /home/ahmed/github_repos/installing-kuberents/kubinit.log`"
-      register: join_cmd
-
-    - debug:
-        msg: "Join command is {{ join_cmd.stdout }}"
-
+    
     - name: allow root user to use the cluster
       shell: "{{item}}"
       with_items:
@@ -97,9 +91,17 @@
         - swapoff -a
         - sed -i '/swap/ s/^/#/' /etc/fstab
 
+    - name: show cluster join command
+      local_action: shell echo "kubeadm join `awk '{print $2,$3,$4,$5,$8,$9}' /home/ahmed/github_repos/installing-kuberents/kubinit.log`"
+      register: join_cmd
+
+    - debug:
+        msg: "Join command is {{ join_cmd.stdout }}"
+
     - name: Join kubernetes cluster
       shell: "{{ join_cmd.stdout }}"
       register: output
 
     - debug:
         msg: "{{ output.stdout }}"
+
