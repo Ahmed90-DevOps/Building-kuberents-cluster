@@ -63,8 +63,11 @@
       loop: "{{save.results}}"
 
     - name: show cluster join command
-      debug: var=item.stdout_lines[-2:]
-      with_items: save.results
+      shell: echo "kubeadm join `awk '{print $2,$3,$4,$5,$8,$9}' /home/ahmed/github_repos/installing-kuberents/kubinit.log`"
+      register: join_cmd
+
+    - debug:
+        msg: "Join command is {{ join_cmd.stdout }}"
 
     - name: allow root user to use the cluster
       shell: "{{item}}"
@@ -93,3 +96,10 @@
         - echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
         - swapoff -a
         - sed -i '/swap/ s/^/#/' /etc/fstab
+
+    - name: Join kubernetes cluster
+      shell: "{{ join_cmd.stdout }}"
+      register: output
+
+    - debug:
+        msg: "{{ output.stdout }}"
