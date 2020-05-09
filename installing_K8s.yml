@@ -92,7 +92,7 @@
         - sed -i '/swap/ s/^/#/' /etc/fstab
 
     - name: show cluster join command
-      local_action: shell echo "kubeadm join `awk '{print $2,$3,$4,$5,$8,$9}' /home/ahmed/github_repos/installing-kuberents/kubinit.log`"
+      local_action: shell echo "kubeadm `awk '{print $2,$3,$4,$5,$8,$9}' /home/ahmed/github_repos/installing-kuberents/kubinit.log`"
       register: join_cmd
 
     - debug:
