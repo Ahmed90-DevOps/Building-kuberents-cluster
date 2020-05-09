@@ -59,10 +59,12 @@
         - kubeadm init --apiserver-advertise-address=192.168.1.25 --pod-network-cidr=10.244.0.0/16
       register: save
 
-    - local_action: copy content={{ save.stdout_lines[-2:] }} dest=/home/ahmed/github_repos/installing-kuberents/kubinit.log
+    - local_action: copy content={{ item.stdout_lines[-2:] }} dest=/home/ahmed/github_repos/installing-kuberents/kubinit.log
+      loop: "{{save.results}}"
 
-    - name: show kubinit output
-      debug: var=save
+    - name: show cluster join command
+      debug: var=item.stdout_lines[-2:]
+      with_items: save.results
 
     - name: allow root user to use the cluster
       shell: "{{item}}"
