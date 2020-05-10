@@ -59,7 +59,7 @@
         - kubeadm init --apiserver-advertise-address=192.168.1.25 --pod-network-cidr=10.244.0.0/16
       register: save
 
-    - local_action: copy content={{ item.stdout_lines[-2:] }} dest=/home/ahmed/github_repos/installing-kuberents/kubinit.log
+    - local_action: copy content={{ item.stdout_lines[-2:] }} dest= ./kubinit.log
       loop: "{{save.results}}"
 
     
@@ -92,7 +92,7 @@
         - sed -i '/swap/ s/^/#/' /etc/fstab
 
     - name: show cluster join command
-      local_action: shell echo "kubeadm `awk '{print $2,$3,$4,$5,$8,$9}' /home/ahmed/github_repos/installing-kuberents/kubinit.log`"
+      local_action: shell echo "kubeadm `awk '{print $2,$3,$4,$5,$8,$9}' ./kubinit.log`"
       register: join_cmd
 
     - debug:
