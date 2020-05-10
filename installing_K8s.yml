@@ -59,7 +59,7 @@
         - kubeadm init --apiserver-advertise-address=192.168.1.25 --pod-network-cidr=10.244.0.0/16
       register: save
 
-    - local_action: copy content={{ item.stdout_lines[-2:] }} dest= ./kubinit.log
+    - local_action: copy content={{ item.stdout_lines[-2:] }} dest=./kubinit.log
       loop: "{{save.results}}"
 
     
