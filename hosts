@@ -1,8 +1,8 @@
 [kuberents-master]
-master ansible_host=192.168.1.25
+master ansible_host=192.168.1.25 ansible_user=root
 
 [kuberents-nodes]
-node01 ansible_host=192.168.1.15
+node01 ansible_host=192.168.1.15 ansible_user=root
 
 [K8s:children]
 kuberents-master
