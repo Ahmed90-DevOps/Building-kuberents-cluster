@@ -1,2 +1,2 @@
 # installing-kuberents
-installing K8s packages on  master and nodes
+installing Kuberents cluster consists of 1 master and 1 worker node using kubeadm.
