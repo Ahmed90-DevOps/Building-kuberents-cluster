@@ -1,2 +1,2 @@
 # installing-kuberents
-installing Kuberents cluster using kubeadm.
+installing Kuberents cluster using kubeadm by Ansible.
