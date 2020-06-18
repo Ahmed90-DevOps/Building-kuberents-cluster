@@ -2,7 +2,7 @@
 Building Kuberents cluster using kubeadm by Ansible.
 - The purpose of this project is to build a kuberents cluster consists of 1 Master node and an (X) number of Worker-Nodes.
 
-![alt text](https://github.com/Ahmed90-DevOps/installing-kuberents/blob/master/kubernetes_architecture.jpg)
+![alt text](https://github.com/Ahmed90-DevOps/installing-kuberents/blob/master/README_images/kubernetes_architecture.jpg)
 
 # Prerequisites:
 1. Multiple Linux servers running CentOS 7 (1 Master Node, Multiple Worker Nodes)
@@ -28,6 +28,7 @@ Building Kuberents cluster using kubeadm by Ansible.
 
 
 # Installation:
-Use the below command on your Ansible server after you edit the hosts file to suit your physical setup.
-- Linux OS:
-- ansible-playbook installing_K8s.yml
+Use the below command on your Ansible server.
+- Linux OS (Centos7):
+- 
+- From the same directory you store the playbook Run >>> ansible-playbook installing_K8s.yml
