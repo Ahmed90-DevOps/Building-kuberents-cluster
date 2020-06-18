@@ -30,11 +30,13 @@ Building Kuberents cluster using kubeadm by Ansible.
 # Installation:
 Use the below command on your Ansible server.
 - Linux OS (Centos7):
+- update hosts file with your desired IPs and Worker-Nodes numbers
 - Editing the apiserver-advertise-address to be the same as your Master node IP before running the playbook as below:
 
 ![alt text](https://github.com/Ahmed90-DevOps/installing-kuberents/blob/master/README_images/Capture.PNG)
 
 - From the same directory you store the playbook Run >>> ansible-playbook installing_K8s.yml
+- After running the playbook successfully check nodes state on Master node by >>> kubectl get nodes
 
 # Contributing:
 - Fork it (https://github.com/yourname/yourproject/fork)
