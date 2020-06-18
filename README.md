@@ -11,6 +11,7 @@ Building Kuberents cluster using kubeadm by Ansible.
 4. Make a host entry or DNS record to resolve the hostname for all nodes >>> edit in /etc/hosts or /etc/resolve.conf if you have a DNS server
 5. Configure Kubernetes Repository on all nodes:-
    vim /etc/yum.repos.d/kubernetes.repo
+   
    [kubernetes]
    name=Kubernetes
    baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
