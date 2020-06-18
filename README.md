@@ -7,8 +7,8 @@ Building Kuberents cluster using kubeadm by Ansible.
 # Prerequisites:
 1. Multiple Linux servers running CentOS 7 (1 Master Node, Multiple Worker Nodes)
 2. A user account on every system with sudo or root privileges
-3. Set the hostname of each machine
-4. All machines should reach each other through hostname >>> setup /etc/hosts or /etc/resolve.conf if you have a DNS server
+3. Set the hostname of each machine >>> hostnamectl set-hostname <Node_name>
+4. Make a host entry or DNS record to resolve the hostname for all nodes >>> edit in /etc/hosts or /etc/resolve.conf if you have a DNS server
 5. Configure Kubernetes Repository on all nodes:-
    vim /etc/yum.repos.d/kubernetes.repo
    [kubernetes]
