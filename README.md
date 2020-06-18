@@ -35,3 +35,10 @@ Use the below command on your Ansible server.
 ![alt text](https://github.com/Ahmed90-DevOps/installing-kuberents/blob/master/README_images/Capture.PNG)
 
 - From the same directory you store the playbook Run >>> ansible-playbook installing_K8s.yml
+
+# Contributing:
+- Fork it (https://github.com/yourname/yourproject/fork)
+- Create your feature branch (git checkout -b feature/fooBar)
+- Commit your changes (git commit -am 'Add some fooBar')
+- Push to the branch (git push origin feature/fooBar)
+- Create a new Pull Request
