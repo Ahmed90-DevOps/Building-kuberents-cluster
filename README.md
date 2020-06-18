@@ -13,7 +13,7 @@ Building Kuberents cluster using kubeadm by Ansible.
    vim /etc/yum.repos.d/kubernetes.repo
    
    [kubernetes]
-   name=Kubernetes
+   name=Kubernetes/n
    baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
    enabled=1
    gpgcheck=1
